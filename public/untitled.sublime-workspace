@@ -1,0 +1,648 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/osedhelu/Documentos/success-u-frontend-/src/app/session/password/password.component.ts",
+			"settings":
+			{
+				"buffer_size": 2250,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/osedhelu/Documentos/success-u-frontend-/src/app/session/login/login.component.ts",
+			"settings":
+			{
+				"buffer_size": 2602,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "import { Injectable } from '@angular/core';\nimport {  Usuarios} from '../../models/user.model';\nimport { HttpClient } from '@angular/common/http';\nimport { URL_SERVICES } from \"../../config/config\";\nimport 'rxjs/add/operator/map';\nimport 'rxjs/add/operator/catch';\nimport { Router } from '@angular/router';\nimport { Observable } from 'rxjs/Observable';\nimport swal from 'sweetalert'\nimport { ToastsManager } from 'ng2-toastr';\n@Injectable()\nexport class UserService {\n  UserData: Usuarios;\n  token: string;\n  constructor(public http: HttpClient, public alert: ToastsManager, public router: Router) {\n    this.cargarStorage();\n  }\n  estalogiado(){\n    return (this.token.length > 5 ) ? true : false;\n  }\ncargarStorage(){\n   if(localStorage.getItem('token')){\n     this.token = localStorage.getItem('token');\n     this.UserData = JSON.parse(localStorage.getItem('user'));\n   }else{\n     this.token = '';\n     this.UserData = null;\n   }\n}\n  guardarStorage(user: Usuarios, token: string){\n    localStorage.setItem('user', JSON.stringify(user));\n    localStorage.setItem('token', token);\n    this.UserData = user;\n    this.token = token;\n  }\n  addUsers(user: Usuarios) {\n    let url = `${URL_SERVICES}/Users`;\n    return this.http.post(url, user).catch(( err: any )=>{\n        this.\n      swal('important!', 'This user already exists', 'error')\n\n      return Observable.throw('el usuario no es valido')\n\n    });\n  }\n  initSession(user: Usuarios, recuerdame: boolean = false) {\n    if(recuerdame) {\n      localStorage.setItem('email', user.email);\n    }else{\n      localStorage.removeItem('email')\n    }\n    let url = `${URL_SERVICES}/login`;\n    return this.http.post(url, user).map((resp: any) =>{\n     if(resp.ok == 'true'){\n      this.guardarStorage(resp.data, resp.token);\n      return true;\n     }\n     return false;\n    })\n  }\n\n  logout(){\n    this.token = \"\";\n    this.UserData = null;\n    localStorage.removeItem('token');\n    localStorage.removeItem('user');\n    window.location.href=\"/\"\n\n  }\n\n  resetPassword(email) {\n    let url = `${URL_SERVICES}/users/verifyEmail/${email}`;\n    return this.http.get(url)\n\n  }\n\n  newPassword(token, User: Usuarios){\n    let url = `${URL_SERVICES}/users/resetPassword/${token}`;\n    return this.http.post(url, User).map(resp=>{\n      this.alert.success('Open your email and reset your password', 'Excellent!');\n      // swal('Excellent!', '', 'success');\n      this.router.navigate(['login']);\n    }).catch(err=>{\n      this.alert.error('login Error', 'Error!');\n\n      return Observable.throw(err.error);\n    })\n  }\n  cargarStudent(){\n    let url = `${URL_SERVICES}/Buyers`;\n    return this.http.get(url);\n  }\n  cargarTeacher(){\n    let url = `${URL_SERVICES}/Teachers`;\n    return this.http.get(url);\n  }\n  cargarUsuarios(){\n    let url = `${URL_SERVICES}/Users`;\n    return this.http.get(url).catch(err=>{\n      if(err.statusText == \"Unknown Error\"){\n        this.logout();\n        window.location.href = \"/\"\n      }\n\n      return Observable.throw(err)\n    });\n  }\n}\n",
+			"file": "/home/osedhelu/Documentos/success-u-frontend-/src/app/services/user/user.service.ts",
+			"file_size": 2996,
+			"file_write_time": 132286257065253290,
+			"settings":
+			{
+				"buffer_size": 3010,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"edit",
+				"Project: Edit Project"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 137.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/osedhelu/Documentos/backent-successu/public/untitled.sublime-project",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/models/user.model.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/component/enrolment-form/enrolment-form.component.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/services/service.index.ts",
+		"/home/osedhelu/Documentos/backent-successu/storage/logs/laravel.log",
+		"/home/osedhelu/Descargas/AddCourses .html",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/models/course.model.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/services/user/user.service.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/pages/course-add/course-add.component.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/session/password/password.component.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/component/enrolment-form/enrolment.service.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/app.module.ts",
+		"/var/www/success-u-backend/public/.htaccess",
+		"/etc/apache2/sites-available/osedhelu.com.conf",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/pages/pages.module.ts",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/config/config.ts",
+		"/etc/hosts",
+		"/home/osedhelu/.bash",
+		"/home/osedhelu/.bashrc",
+		"/home/osedhelu/Documentos/backent-successu/public/.htaccess",
+		"/home/osedhelu/hosts",
+		"/home/osedhelu/host",
+		"/etc/apache2/sites-available/server-osedhelu.conf",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/pages/categoryadd/categoryadd.component.html",
+		"/home/osedhelu/Documentos/success-u-frontend-/node_modules/event-emitter/pipe.js",
+		"/home/osedhelu/Documentos/success-u-frontend-/src/app/pipes/imagen/imagen.pipe.ts",
+		"/home/osedhelu/Documentos/backent-successu/.env"
+	],
+	"find":
+	{
+		"height": 29.0
+	},
+	"find_in_files":
+	{
+		"height": 108.0,
+		"where_history":
+		[
+			"/home/osedhelu/Documentos/success-u-frontend-/src"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"EnrolmentFormComponent",
+			"EnrolmentService",
+			"import { EnrolmentService } from '../component/Enrolment-form/enrolment.service';\nEnrolmentService",
+			"EnrolmentService",
+			"/Enrolment-form/",
+			"usuario",
+			"server.mysuccessu.com",
+			"Allowoverride",
+			"ServerAlias"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/osedhelu/Documentos/success-u-frontend-/src/app/session/password/password.component.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2250,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1941,
+								1941
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										1940,
+										1941
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										1921,
+										1922
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"syntax": "Packages/TypeScript Syntax/TypeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1040.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/osedhelu/Documentos/success-u-frontend-/src/app/session/login/login.component.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2602,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"syntax": "Packages/TypeScript Syntax/TypeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 157.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/osedhelu/Documentos/success-u-frontend-/src/app/services/user/user.service.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3010,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								869,
+								869
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										873,
+										874
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										756,
+										757
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/TypeScript Syntax/TypeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "untitled.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"login.com",
+				"success-u-frontend-/src/app/session/login/login.component.ts"
+			],
+			[
+				"lara",
+				"backent-successu/storage/logs/laravel.log"
+			],
+			[
+				"service.index.ts",
+				"success-u-frontend-/src/app/services/service.index.ts"
+			],
+			[
+				"passwoe",
+				"success-u-frontend-/src/app/session/password/password.component.ts"
+			],
+			[
+				"password.component.ts",
+				"success-u-frontend-/src/app/session/password/password.component.ts"
+			],
+			[
+				"user.ser",
+				"success-u-frontend-/src/app/services/user/user.service.ts"
+			],
+			[
+				"user.mode",
+				"success-u-frontend-/src/app/models/user.model.ts"
+			],
+			[
+				"courseadd",
+				"success-u-frontend-/src/app/pages/course-add/course-add.component.ts"
+			],
+			[
+				"pages.",
+				"success-u-frontend-/src/app/pages/pages.module.ts"
+			],
+			[
+				"config.ts",
+				"success-u-frontend-/src/app/config/config.ts"
+			],
+			[
+				"categoryadd",
+				"success-u-frontend-/src/app/pages/categoryadd/categoryadd.component.html"
+			],
+			[
+				"pipeima",
+				"success-u-frontend-/src/app/pipes/imagen/imagen.pipe.ts"
+			],
+			[
+				"pipe",
+				"success-u-frontend-/node_modules/event-emitter/pipe.js"
+			],
+			[
+				"categoryad",
+				"success-u-frontend-/src/app/pages/categoryadd/categoryadd.component.html"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 395.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
